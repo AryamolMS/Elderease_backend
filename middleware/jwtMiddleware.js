@@ -1,21 +1,17 @@
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 
-const jwtMiddleware = (req,res,next)=>{
-    console.log('inside jwt middleware');
+module.exports = (req, res, next) => {
+    const token = req.header('Authorization');
 
-    const token = req.headers['authorization'].split(' ')[1]
-    console.log(token);
-
-    try{
-        const jwtResponse = jwt.verify(token,"SECRET_KEY")
-        console.log(jwtResponse);
-        req.payload = jwtResponse.userId
-        next()
-
-    } catch(err){
-        res.status(401).json('Authorization failed....Please Login')
+    if (!token) {
+        return res.status(401).json({ error: "Access denied. No token provided." });
     }
-   
-}
 
-module.exports = jwtMiddleware
+    try {
+        const decoded = jwt.verify(token.replace("Bearer ", ""), "your_secret_key"); // Use your actual secret key
+        req.user = decoded; // Now req.user contains { id, role }
+        next();
+    } catch (error) {
+        res.status(403).json({ error: "Invalid token" });
+    }
+};

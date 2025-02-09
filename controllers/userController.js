@@ -2,7 +2,7 @@
 
 //import model
 const users = require('../Model/userSchema')
-
+const bcrypt = require('bcryptjs');
 //import jwt
 const jwt = require('jsonwebtoken')
 
@@ -41,27 +41,45 @@ exports.register = async(req,res)=>{
 
 //login request
 
-exports.login = async(req,res)=>{
-  console.log(req.body)
-  const {email,password} = req.body
+exports.login = async (req, res) => {
+  console.log("🔹 Incoming Request Body:", req.body); // ✅ Debugging
 
-  try{const existingUser = await users.findOne({email,password})
-  console.log(existingUser);
+  const { email, password } = req.body;
 
-  if(existingUser){
-    //jwt token
-   const token = jwt.sign({userId:existingUser._id},"secrectkey1010")
-    //sending as object because we are sending more than one data
-    res.status(200).json({
-        existingUser,
-        token
-      })
+  if (!email || !password) {
+    console.log("❌ Missing Email or Password");
+    return res.status(400).json({ message: "Email and password are required." });
   }
-  else{
-    res.status(404).json('Invalid email or password')
-  }}catch(err){
-    res.status(401).json(`login request failed due to :${err}`)
+
+  try {
+    const existingUser = await users.findOne({ email });
+
+    if (!existingUser || existingUser.password !== password) {
+      return res.status(404).json({ message: "Invalid email or password" });
+    }
+
+    // ✅ Generate JWT Token
+    const token = jwt.sign(
+      { userId: existingUser._id, email: existingUser.email }, 
+      "your_secret_key", // Replace with an actual secret key from .env
+      { expiresIn: "1h" } // Token expires in 1 hour
+    );
+
+    // ✅ Send token, userId, email, and password in response
+    res.status(200).json({ 
+      message: "Login successful", 
+      userId: existingUser._id, 
+      email: existingUser.email,
+      password: existingUser.password, // ⚠️ Storing password in localStorage is NOT recommended
+      token 
+    });
+
+  } catch (error) {
+    console.error("❌ Error in Login:", error);
+    res.status(500).json({ message: "Server error" });
   }
-}
+};
+;
+
 
 

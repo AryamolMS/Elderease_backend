@@ -3,7 +3,9 @@ const express = require('express');
 
 // Import controllers
 const userController = require('../controllers/userController');
-const eventController = require('../controllers/eventController')
+const eventController = require('../controllers/eventController');
+const contactController = require('../controllers/contactController');
+const tutorialContoller = require('../controllers/tutorialContoller')
 
 // Import middlewares
 const jwtMiddleware = require('../middleware/jwtMiddleware');
@@ -22,14 +24,32 @@ router.post('/user/login', userController.login);
 // 4) Event-related routes (Require authentication for protected routes)
 // a) Add a new event (User must be logged in)
 router.post('/events', jwtMiddleware, eventController.createEvent);
-//get events
+
+// Get all events
 router.get('/events', eventController.getAllEvents);
 
 router.get('/admin/events', jwtMiddleware, eventController.getAllEventsForAdmin);
+
 // ✅ Approve an event (Admin only)
-router.put('/approve-event/:eventId', jwtMiddleware, eventController.approveEvent);
+router.put("/events/approve/:eventId", eventController.approveEvent);
 
+// Get approved events
+router.get("/events/approved", eventController.getApprovedEvents);
 
+// Get rejected events
+router.get("/events/rejected", eventController.getRejectedEvents);
 
-// 5) Export router
+// Reject an event
+router.put("/events/reject/:eventId", eventController.rejectEvent);
+
+// ✅ Get pending events
+router.get("/events/pending", eventController.getPendingEvents);
+
+// 5) Contact-related routes
+router.post('/contact', contactController.createContact);
+
+router.post('/tutorials', tutorialContoller.addTutorial);
+router.get('/tutorials', tutorialContoller.getTutorials);
+
+// 6) Export router
 module.exports = router;

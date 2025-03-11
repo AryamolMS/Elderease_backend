@@ -35,6 +35,14 @@ const eventSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'users', // Reference to the User model
         required: true
+    },
+    approved: {
+        type: Boolean,
+        default: false // Default to pending
+    },
+    rejected: {
+        type: Boolean,
+        default: false // Default to pending
     }
 }, { timestamps: true });
 

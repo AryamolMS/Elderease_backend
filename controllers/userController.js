@@ -58,19 +58,22 @@ exports.login = async (req, res) => {
       return res.status(404).json({ message: "Invalid email or password" });
     }
 
-    // ✅ Generate JWT Token
+    // ✅ Generate JWT Token with the correct secret
     const token = jwt.sign(
       { userId: existingUser._id, email: existingUser.email }, 
-      "your_secret_key", // Replace with an actual secret key from .env
-      { expiresIn: "1h" } // Token expires in 1 hour
+      process.env.JWT_SECRET, 
+      { expiresIn: "1h" }
     );
+    
+    console.log("🔑 Signing Token With Secret:", process.env.JWT_SECRET); // Debug
+    console.log("🟢 Generated Token:", token);
+    
 
-    // ✅ Send token, userId, email, and password in response
+    // ✅ Send token and user details in response
     res.status(200).json({ 
       message: "Login successful", 
       userId: existingUser._id, 
       email: existingUser.email,
-      password: existingUser.password, // ⚠️ Storing password in localStorage is NOT recommended
       token 
     });
 
@@ -79,7 +82,4 @@ exports.login = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
-;
-
-
 

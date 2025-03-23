@@ -7,11 +7,14 @@ const eventController = require('../controllers/eventController');
 const contactController = require('../controllers/contactController');
 const tutorialContoller = require('../controllers/tutorialContoller');
 const chatController = require("../controllers/chatController");
+const questionController = require('../controllers/questionController')
+const answerController = require('../controllers/answerController')
 
 
 // Import middlewares
 const jwtMiddleware = require('../middleware/jwtMiddleware');
 const multerConfig = require('../middleware/multerMiddleware');
+const authMiddleware = require('../middleware/authMiddleware')
 
 // 2) Create an Express Router instance
 const router = new express.Router();
@@ -25,7 +28,7 @@ router.post('/user/login', userController.login);
 
 // 4) Event-related routes (Require authentication for protected routes)
 // a) Add a new event (User must be logged in)
-router.post('/events', jwtMiddleware, eventController.createEvent);
+router.post('/events', authMiddleware, eventController.createEvent);
 
 // Get all events
 router.get('/events', eventController.getAllEvents);
@@ -57,6 +60,11 @@ router.post('/send', chatController.sendMessage);
 router.get('/messages/:userId?', chatController.getMessages);
 router.post("/messages/reply", chatController.sendReply);
 
+router.post('/questions',questionController.addQuestion);
+router.get("/questions/daily", questionController.getDailyQuestions);
+router.post("/questions/submit", answerController.submitAnswers);
+router.get('/answers',answerController.getSubmittedAnswers);
+router.get("/correct-answers", answerController.getCorrectAnswers);
 
 
 // 6) Export router

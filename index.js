@@ -1,6 +1,6 @@
 // 1. import dotenv
 // loads .env file contents into process .env by  defaults
-require('dotenv').config()
+require("dotenv").config();
 
 //2.import express
 const express = require('express')

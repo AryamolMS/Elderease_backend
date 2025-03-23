@@ -18,4 +18,29 @@ module.exports = (req, res, next) => {
         console.error("❌ JWT Verification Error:", error.message);
         res.status(403).json({ error: "Invalid token" });
     }
+}; 
+
+/* const jwt = require("jsonwebtoken");
+
+module.exports = (req, res, next) => {
+  const token = req.header("Authorization")?.split(" ")[1]; // Remove 'Bearer ' prefix
+
+  if (!token) return res.status(401).json({ message: "Access Denied. No Token Provided." });
+
+  try {
+    console.log("Received Token:", token);
+    console.log("JWT Secret Key:", process.env.JWT_SECRET);
+
+    const verified = jwt.verify(token, process.env.JWT_SECRET);
+    console.log("Verified Token Data:", verified);
+
+    req.user = verified;
+    next();
+  } catch (error) {
+    console.error("JWT Verification Error:", error);
+    res.status(400).json({ message: "Invalid Token" });
+  }
 };
+
+
+ */

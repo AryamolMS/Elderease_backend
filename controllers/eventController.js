@@ -1,6 +1,6 @@
 const Event = require('../Model/eventSchema');
 
-exports.createEvent = async (req, res) => {
+ exports.createEvent = async (req, res) => {
     try {
         const { title, description, date, link } = req.body;
         const userId = req.user?.userId; 
@@ -31,7 +31,9 @@ exports.createEvent = async (req, res) => {
         console.error("❌ Error in createEvent:", error.message);
         res.status(500).json({ error: error.message });
     }
-};
+}; 
+
+
 
 
 exports.getAllEvents = async (req, res) => {

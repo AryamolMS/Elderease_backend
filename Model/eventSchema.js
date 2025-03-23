@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
-
-const eventSchema = new mongoose.Schema({
+ const eventSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
@@ -51,3 +50,5 @@ const Event = mongoose.model('events', eventSchema);
 
 // Export Model
 module.exports = Event;
+
+

@@ -5,7 +5,9 @@ const express = require('express');
 const userController = require('../controllers/userController');
 const eventController = require('../controllers/eventController');
 const contactController = require('../controllers/contactController');
-const tutorialContoller = require('../controllers/tutorialContoller')
+const tutorialContoller = require('../controllers/tutorialContoller');
+const chatController = require("../controllers/chatController");
+
 
 // Import middlewares
 const jwtMiddleware = require('../middleware/jwtMiddleware');
@@ -50,6 +52,12 @@ router.post('/contact', contactController.createContact);
 
 router.post('/tutorials', tutorialContoller.addTutorial);
 router.get('/tutorials', tutorialContoller.getTutorials);
+
+router.post('/send', chatController.sendMessage);
+router.get('/messages/:userId?', chatController.getMessages);
+router.post("/messages/reply", chatController.sendReply);
+
+
 
 // 6) Export router
 module.exports = router;

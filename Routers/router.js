@@ -9,6 +9,8 @@ const tutorialContoller = require('../controllers/tutorialContoller');
 const chatController = require("../controllers/chatController");
 const questionController = require('../controllers/questionController')
 const answerController = require('../controllers/answerController')
+const { sendGroupMessage, getGroupMessages } = require("../controllers/groupChatController");
+
 
 
 // Import middlewares
@@ -65,6 +67,9 @@ router.get("/questions/daily", questionController.getDailyQuestions);
 router.post("/questions/submit", answerController.submitAnswers);
 router.get('/answers',answerController.getSubmittedAnswers);
 router.get("/correct-answers", answerController.getCorrectAnswers);
+// ✅ Group Chat Routes
+router.post("/group/send", sendGroupMessage);
+router.get("/group/messages", getGroupMessages);
 
 
 // 6) Export router

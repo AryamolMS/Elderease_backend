@@ -37,17 +37,18 @@ exports.getTutorials = async (req, res) => {
 // ✅ Delete a tutorial
 exports.deleteTutorial = async (req, res) => {
     try {
-        const { id } = req.params;
-
-        const tutorial = await Tutorial.findById(id);
-        if (!tutorial) {
-            return res.status(404).json({ message: "Tutorial not found" });
-        }
-
-        await Tutorial.findByIdAndDelete(id);
-        res.status(200).json({ message: "Tutorial deleted successfully" });
+      const { id } = req.params;
+      const tutorial = await Tutorial.findById(id);
+  
+      if (!tutorial) {
+        return res.status(404).json({ message: "Tutorial not found" });
+      }
+  
+      await Tutorial.findByIdAndDelete(id);
+      res.status(200).json({ message: "Tutorial deleted successfully" });
     } catch (error) {
-        console.error("❌ Error deleting tutorial:", error);
-        res.status(500).json({ message: "Server error" });
+      console.error("❌ Error deleting tutorial:", error);
+      res.status(500).json({ message: "Server error" });
     }
-};
+  };
+  

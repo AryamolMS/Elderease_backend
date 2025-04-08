@@ -57,6 +57,8 @@ router.post('/contact', contactController.createContact);
 
 router.post('/tutorials', tutorialContoller.addTutorial);
 router.get('/tutorials', tutorialContoller.getTutorials);
+router.delete("/tutorials/:id", tutorialContoller.deleteTutorial);
+
 
 router.post('/send', chatController.sendMessage);
 router.get('/messages/:userId?', chatController.getMessages);
